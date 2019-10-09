@@ -11,13 +11,15 @@ def getMovieDetail(movieID):
     url = omdb + "/?i=" + movieID + "&apikey=" + api_key
     try:
         response = requests.get(url)
-        if response.status_code == 200:
-            movieData = response.json()
-            saveToFile(movieData)
+        movieData = response.json()
+        if response.status_code == 200 and movieData["Response"] == "True":
+            return movieData
         else:
-            print("Unable to query the request data at this time")
+            print("Unable to query the requested data at this time or invalid movie ID / API key")
+            return False
     except Exception as error:
         print(error)
+        return False
 
 def saveToFile(movieData):
     try:
@@ -26,9 +28,13 @@ def saveToFile(movieData):
             for key in keys:
                 file.write(key + ": " + movieData[key] + "\n")
             file.write("\n")
+            return True
     except IOError as error:        
-                print(error)
+        print(error)
+        return False 
 
-movies = ["tt0086190", "tt0089880", "tt0088247", "tt0372784", "tt0080684"] 
+movies = ["tt0086190", "tt0089880", "tt0088247", "tt0372784", "tt0080684"]
 for movie in movies:
-    getMovieDetail(movie)
+    movieData = getMovieDetail(movie)
+    if movieData != False:
+        saveToFile(movieData)
