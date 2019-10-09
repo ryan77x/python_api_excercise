@@ -29,11 +29,11 @@ def saveToFile(movieData):
                 file.write(key + ": " + movieData[key] + "\n")
             file.write("\n")
             return True
-    except IOError as error:        
+    except Exception as error:  
         print(error)
         return False 
 
-movies = ["tt0086190", "tt0089880", "tt0088247", "tt0372784", "tt0080684"]
+movies = ["tt0088247", "tt0086190", "tt0089880", "tt0372784", "tt0080684"]
 for movie in movies:
     movieData = getMovieDetail(movie)
     if movieData != False:
