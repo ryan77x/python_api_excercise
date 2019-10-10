@@ -1,19 +1,19 @@
-# This Python script gets movie details from http://www.omdbapi.com API and then store them into a local file.
+# This Python script gets movie details from http://www.omdbapi.com API and then stores them into a local file.
 # Author: Ryan Liang
 
 import requests
 
 omdb = "http://www.omdbapi.com"
 api_key = "dummy"
-fileName = "movies_details.txt"
+file_name = "movies_details.txt"
 
-def getMovieDetail(movieID):
-    url = omdb + "/?i=" + movieID + "&apikey=" + api_key
+def get_movie_detail(movie_ID):
+    url = omdb + "/?i=" + movie_ID + "&apikey=" + api_key
     try:
         response = requests.get(url)
-        movieData = response.json()
-        if response.status_code == 200 and movieData["Response"] == "True":
-            return movieData
+        movie_data = response.json()
+        if response.status_code == 200 and movie_data["Response"] == "True":
+            return movie_data
         else:
             print("Unable to query the requested data at this time or invalid movie ID / API key")
             return False
@@ -21,12 +21,12 @@ def getMovieDetail(movieID):
         print(error)
         return False
 
-def saveToFile(movieData):
+def save_to_file(movie_data):
     try:
-        with open(fileName, "a") as file:
+        with open(file_name, "a") as file:
             keys = ["Title", "Released", "Runtime", "Genre", "imdbRating", "BoxOffice", "Poster", "Plot"]
             for key in keys:
-                file.write(key + ": " + movieData[key] + "\n")
+                file.write(key + ": " + movie_data[key] + "\n")
             file.write("\n")
             return True
     except Exception as error:  
@@ -35,6 +35,6 @@ def saveToFile(movieData):
 
 movies = ["tt0088247", "tt0086190", "tt0089880", "tt0372784", "tt0080684"]
 for movie in movies:
-    movieData = getMovieDetail(movie)
-    if movieData != False:
-        saveToFile(movieData)
+    movie_data = get_movie_detail(movie)
+    if movie_data != False:
+        save_to_file(movie_data)
